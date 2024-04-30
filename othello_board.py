@@ -117,7 +117,8 @@ class OthelloBoard(Board):
 
     def play_move(self, col, row, symbol):
         self.set_cell(col, row, symbol)
-        self.flip_pieces(col, row, symbol)
+        numPiecesFlipped = self.flip_pieces(col, row, symbol)
+        return numPiecesFlipped
 
 
 
