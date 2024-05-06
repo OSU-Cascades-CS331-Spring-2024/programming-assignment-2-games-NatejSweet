@@ -39,38 +39,38 @@ class MinimaxPlayer(Player):
             self.oppSym = 'X'
 
     def get_move(self, board):
-        col,row,val = self.minimax(board, 1, self.symbol)
+        col,row,val = self.minimax(board, 8, self.symbol)
         print("Minimax value: ", val)
         print("Move: ", col, row)
         return col,row
     
 
     def minimax(self, board, depth, symbol):
-        if depth==0 or  board.has_legal_moves_remaining(symbol) == False:
-                return -1,-1, board.count_score(self.symbol)
-        if symbol == self.symbol:
-            value = -1000
-            best_move = (-1, -1)
+        if depth==0 or not board.has_legal_moves_remaining(symbol):
+            return -1,-1, board.count_score(symbol)
+        
+        best_move = (-1, -1)
+        if symbol == self.symbol: #maximizing player
+            value = float('-inf')
             for col in range(board.get_num_cols()):
                 for row in range(board.get_num_rows()):
-                    if board.is_legal_move(col, row, self.symbol):
+                    if board.is_legal_move(col, row, symbol):
                         tmpBoard = board.clone_of_board()
-                        pieces_flipped = tmpBoard.play_move(col, row,  symbol)
+                        tmpBoard.play_move(col, row, symbol)
                         _, _, temp_value = self.minimax(tmpBoard, depth - 1, self.oppSym)
                         if temp_value > value:
                             value = temp_value
                             best_move = (col, row)
-            return best_move[0], best_move[1], value
-        else :
-            value = 1000
-            best_move = (-1, -1)
+        else : #minimizing player
+            value = float('inf')
             for col in range(board.get_num_cols()):
                 for row in range(board.get_num_rows()):
                     if board.is_legal_move(col, row, self.oppSym):
                         tmpBoard = board.clone_of_board()
-                        pieces_flipped = tmpBoard.play_move(col, row,  self.oppSym)
+                        tmpBoard.play_move(col, row, self.oppSym)
                         _, _, temp_value = self.minimax(tmpBoard, depth - 1, self.symbol)
                         if temp_value < value:
-                                value = temp_value
-                                best_move = (col, row)
-                return best_move[0], best_move[1], value
+                            value = temp_value
+                            best_move = (col, row)
+        
+        return best_move[0], best_move[1], value

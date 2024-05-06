@@ -4,10 +4,13 @@
 import sys
 from players import *
 from othello_board import OthelloBoard
+import time
 
 
 class GameDriver:
     def __init__(self, p1type, p2type, num_rows, num_cols):
+        self.total_time = 0
+        self.total_moves = 0
         if p1type.lower() in "human":
             self.p1 = HumanPlayer('X')
         elif p1type.lower() in "minimax" or p1type in "ai":
@@ -34,7 +37,14 @@ class GameDriver:
     def process_move(self, curr_player, opponent):
         invalid_move = True
         while invalid_move:
+            start_time = time.time()  # Start the timer
             (col, row) = curr_player.get_move(self.board)
+            end_time = time.time()  # End the timer
+            time_taken = end_time - start_time
+            print("Time taken: ", time_taken, "seconds")
+            if isinstance(curr_player, MinimaxPlayer):
+                self.total_time += time_taken
+                self.total_moves += 1
             if not self.board.is_legal_move(col, row, curr_player.symbol):
                 print("Invalid move")
             else:
@@ -42,6 +52,8 @@ class GameDriver:
                 self.board.play_move(col,row,curr_player.symbol)
                 return
 
+    def print_average_times(self):
+            print("Average time taken: ", self.total_time/self.total_moves, "seconds")
     def run(self):
         current = self.p1
         opponent = self.p2
@@ -77,11 +89,12 @@ class GameDriver:
             print("Player 1 Wins!")
         else:
             print("Player 2 Wins!")
+        self.print_average_times()
 
 
 if __name__ == "__main__":
     if(len(sys.argv)) != 3:
         print("Usage: python3 game_driver.py <player1 type> <player2 type>")
         exit(1)
-    game = GameDriver(sys.argv[1], sys.argv[2], 4, 4)
+    game = GameDriver(sys.argv[1], sys.argv[2], 8, 8)
     game.run()
