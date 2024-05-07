@@ -39,17 +39,17 @@ class MinimaxPlayer(Player):
             self.oppSym = 'X'
 
     def get_move(self, board):
-        col,row,val = self.minimax(board, 8, self.symbol)
+        col,row,val = self.minimax(board, 5, self.symbol)
         print("Minimax value: ", val)
         print("Move: ", col, row)
         return col,row
     
-
+#Source: https://en.wikipedia.org/wiki/Minimax
     def minimax(self, board, depth, symbol):
         if depth==0 or not board.has_legal_moves_remaining(symbol):
             return -1,-1, board.count_score(symbol)
-        
-        best_move = (-1, -1)
+
+        best_move = (None, None)
         if symbol == self.symbol: #maximizing player
             value = float('-inf')
             for col in range(board.get_num_cols()):
@@ -61,13 +61,13 @@ class MinimaxPlayer(Player):
                         if temp_value > value:
                             value = temp_value
                             best_move = (col, row)
-        else : #minimizing player
+        else: #minimizing player
             value = float('inf')
             for col in range(board.get_num_cols()):
                 for row in range(board.get_num_rows()):
-                    if board.is_legal_move(col, row, self.oppSym):
+                    if board.is_legal_move(col, row, symbol):
                         tmpBoard = board.clone_of_board()
-                        tmpBoard.play_move(col, row, self.oppSym)
+                        tmpBoard.play_move(col, row, symbol)
                         _, _, temp_value = self.minimax(tmpBoard, depth - 1, self.symbol)
                         if temp_value < value:
                             value = temp_value

@@ -3,8 +3,8 @@ depth parameter set to 5, 3, 2, and 1, respectively.
 a. What were the results of each game?
     Human First:
         5: Agent victory
-        4: Human victory
-        3: Human victory
+        4: Agent victory
+        3: Agent victory
         2: Human victory
         1: Human victory
             after the first game, i tried a different first move, (0,2),
@@ -55,20 +55,25 @@ the agent calculating with 1 extra possible turn than the human-first games
 depth parameter set to 5 and 2.
 a. What were the results of each game?
     Human First:
-        5: 
-        2: 
+        5: Agent victory
+        2: I WON!!!!!
     Agent First:
-        5: 
-        2: 
+        5: I WON!!!
+        2: Joey won
 b. Did the minimax player’s moves change when the depth changed?
+    Yes, but only slightly
 
 c. What was the average time per move for each of the games? Comment on why
 there is or is not a difference.
     Human First:
-        5: 
-        2: 
+        5: 7.663
+        2: .02
     Agent First:
-        5: 
-        2: 
+        5: 3.41, I'm not sure why this was faster, I did plug in my laptop during the game
+        2: 0.026
+
+There is a huge difference in computation time betwen 2 depth and 5 depth, 
+this is due to the differenct in computation between these depths. The braching factore of
+this game makes the number of comparisons huge. 
 
 
